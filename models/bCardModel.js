@@ -1,0 +1,44 @@
+const mongoose = require('mongoose');
+const validator = require('validator');
+
+const cardSchema = new mongoose.Schema({
+  company_name: {
+    type: String,
+    required: [true, 'Please provide a name'],
+    minlength: [2, 'Name must be at least 2 characters long.'],
+    maxlength: [30, 'Name must be under 30 characters.']
+  },
+  user_id: {
+    type: String,
+    maxlength: 400
+  },
+  company_description: {
+    type: String,
+    maxlength: [3000, 'Max 3000 characters allowed.']
+  },
+  company_address: {
+    type: String,
+    maxlength: [250, 'Max 250 characters allowed.']
+  },
+  company_phone: {
+    type: String,
+    required: [true, 'Please submit a phone number.'],
+    match: [/^[+]?(\d{1,2})?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/, 'Enter a valid phone number']
+  },
+  company_photo: {
+    type: String
+  },
+  card_number: {
+    type: Number,
+    unique: [true, 'Somthing went wrong, try again'],
+    default: () => Math.floor(100000 + Math.random() * 900000)
+  },
+  created_at: {
+    type: Date,
+    default: Date.now()
+  }
+});
+
+const Card = mongoose.model('card', cardSchema, 'cards');
+
+module.exports = Card;

@@ -1,0 +1,36 @@
+{
+    "cards": [
+        {
+            "bName": "nats shoes",
+            "user_id": "9780743273565",
+            "bDiscription": "A novel by F. Scott Fitzgerald",
+            "bAdress": "25 street",
+            "bPhone": "1234567",
+            "bPhoto": "pic",
+            "cardNum": 20
+            
+        },
+          {
+            "bName": "lees shoes",
+            "user_id": "5456454545454",
+            "bDiscription": "A novel by F. Scott me",
+            "bAdress": "26 street",
+            "bPhone": "12345687",
+            "bPhoto": "pics",
+            "cardNum": 21
+            
+        },
+           {
+            "bName": "sharons shoes",
+            "user_id": "877878787878",
+            "bDiscription": "A novel by F. Scott her",
+            "bAdress": "27 street",
+            "bPhone": "123456799",
+            "bPhoto": "pic2",
+            "cardNum": 22
+            
+        }
+    ]
+}
+
+
