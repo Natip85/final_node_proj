@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs')
 const Card = require('../models/bCardModel');
 const verify_logged_in = require('../middleware/verify_logged_in')
-
+console.log('trtr');
 /*
 * GET http://localhost:3009/api/cards/myCard
 */
