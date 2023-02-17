@@ -26,11 +26,17 @@ const cardSchema = new mongoose.Schema({
     match: [/^[+]?(\d{1,2})?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/, 'Enter a valid phone number']
   },
   company_photo: {
-    type: String
+    type: String,
+    default: function() {
+      if (!this.bPhoto) {
+        return `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png`;
+      }
+      return this.bPhoto;
+    }
   },
   card_number: {
     type: Number,
-    unique: [true, 'Somthing went wrong, try again'],
+    unique: [true, 'Card number already exists'],
     default: () => Math.floor(100000 + Math.random() * 900000)
   },
   created_at: {

@@ -59,9 +59,4 @@ userSchema.pre('save', async function(next) {
 
 const User = mongoose.model('user', userSchema);
 
-// userSchema.path('email').validate(async value => {
-//   const emailCount = await User.countDocuments({ email: value });
-//   return !emailCount;
-// }, 'Email already exists.');
-
 module.exports = User;
