@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
     maxlength: [150, 'Max 150 characters allowed.'],
-    minlength: [1, 'Min 1 character required.'],
     required: [true, 'Must submit an email.'],
     validate: [validator.isEmail, 'Please provide a valid email.']
   },

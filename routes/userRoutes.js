@@ -11,13 +11,24 @@ const signToken = (id, biz) => {
   return jwt.sign({ id, biz }, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN});
 };
 
+const cookieOptions = {
+  expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // 10 days
+  // secure: true,  //on development, secure will be false
+  httpOnly: true
+};
+
 /*
 * POST http://localhost:3009/api/users/register
 */
 router.post('/register', async (req, res)=>{
   try {
+    const { name, email, password, confirmPassword } = req.body;
+    const duplicateEmail = await User.findOne({ email: email });
+    if (duplicateEmail) {
+      return res.status(409).json({ status: 'Fail', message: 'Email already exist' });
+    }
     const newUser = await User.create(req.body);
-    const { name, email, _id } = newUser;
+    const { _id } = newUser;
 
     await sendEmail({
       email: newUser.email,
@@ -56,6 +67,8 @@ router.post('/login', async (req, res)=>{
       return res.status(401).json({ status: 'There was problem with your authentication, please sign in again.'});
     }
 
+    res.cookie('jwt', token, cookieOptions);
+    
     res.status(200).json({
       status: 'Success',
       token: token 

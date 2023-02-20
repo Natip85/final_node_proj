@@ -8,7 +8,10 @@ async function verify_logged_in  (req, res, next)  {
       token = req.headers.authorization.split(' ')[1];
     }
     if (!token) {
-      return res.status(401).json({ status: 'Fail', message: 'You are not logged in! Please log in to continue.' });
+      return res.status(401).json({ 
+        status: 'Fail', 
+        message: 'You are not logged in! Please log in to continue.' 
+      });
     }
     const decoded = await jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;

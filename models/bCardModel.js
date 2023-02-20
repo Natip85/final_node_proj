@@ -22,16 +22,17 @@ const cardSchema = new mongoose.Schema({
   },
   company_phone: {
     type: String,
-    required: [true, 'Please submit a phone number.'],
+    minlength: [6, 'Phone number is not valid'],
+    maxlength: [250, 'Phone number is not valid'],
     match: [/^[+]?(\d{1,2})?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/, 'Enter a valid phone number']
   },
   company_photo: {
     type: String,
     default: function() {
-      if (!this.bPhoto) {
+      if (!this.company_photo) {
         return `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png`;
       }
-      return this.bPhoto;
+      return this.company_photo;
     }
   },
   card_number: {

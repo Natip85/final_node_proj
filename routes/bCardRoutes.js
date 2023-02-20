@@ -31,7 +31,7 @@ router.get('/mycard', verify_logged_in, async (req, res)=>{
 /*
 * GET http://localhost:3009/api/cards
 */
-router.get('/', async (req, res)=>{
+router.get('/', verify_logged_in, async (req, res)=>{
   try {
     const allCards = await Card.find({});
 
@@ -51,7 +51,7 @@ router.get('/', async (req, res)=>{
 /*
 * GET http://localhost:3009/api/cards/21212121212
 */
-router.get('/:id', async (req, res)=>{
+router.get('/:id', verify_logged_in, async (req, res)=>{
  try {
     const { id } = req.params;
     if (!id) {
