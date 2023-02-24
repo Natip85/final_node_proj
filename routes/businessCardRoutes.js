@@ -75,25 +75,6 @@ router.get('/:id', verify_logged_in, async (req, res)=>{
 });
 
 /*
-* PUT http://localhost:3009/api/cards/init
-*/
-router.put('/init', async (req, res)=>{
-  Card.collection.drop();
-  fs.readFile('./dal/cards.json', 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      res.json("Fail");
-      return
-    }
-  const jsData = JSON.parse(data);
-  jsData.cards.forEach(element => {
-    new Card(element).save()
-  })
-  res.json("Success")
-    })
-});
-
-/*
 * POST http://localhost:3009/api/cards
 */
 router.post('/', verify_logged_in, async (req, res)=>{
