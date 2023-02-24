@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const User = require('./../models/userModel');
 const verify_logged_in = require('../middleware/verify_logged_in')
 const sendEmail = require('./../utils/mail');
+const validator = require('validator');
 
 // Token signing function
 const signToken = (id, biz) => {
@@ -12,8 +13,7 @@ const signToken = (id, biz) => {
 };
 
 const cookieOptions = {
-  expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // 10 days
-  // secure: true,  //on development, secure will be false
+  expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), 
   httpOnly: true
 };
 

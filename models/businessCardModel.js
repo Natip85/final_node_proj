@@ -24,7 +24,8 @@ const cardSchema = new mongoose.Schema({
     type: String,
     minlength: [6, 'Phone number is not valid'],
     maxlength: [250, 'Phone number is not valid'],
-    match: [/^[+]?(\d{1,2})?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/, 'Enter a valid phone number']
+    match: [/^[+]?(\d{1,2})?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/, 'Enter a valid phone number'],
+    // validate: [validator.isDecimal, 'Please enter a valid phone number']
   },
   company_photo: {
     type: String,

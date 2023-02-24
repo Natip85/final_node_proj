@@ -4,7 +4,7 @@ const User = require('./../models/userModel');
 async function verify_logged_in  (req, res, next)  {
   try {
     let token;
-    if (req.headers.authorization.startsWith('Bearer')) {
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
     }
     if (!token) {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs')
-const Card = require('../models/bCardModel');
+const Card = require('../models/businessCardModel');
 const verify_logged_in = require('../middleware/verify_logged_in')
 
 /*
@@ -98,9 +98,23 @@ router.put('/init', async (req, res)=>{
 */
 router.post('/', verify_logged_in, async (req, res)=>{
  try {
-    const decoded = req.user;
-    req.body.user_id = decoded.id;
-    const newCard = await Card.create(req.body);
+  const user_id = req.user.id
+  const { company_name, company_description, company_address, company_phone, company_photo } = req.body
+   const duplicateCard = await Card.findOne({ company_name: company_name });
+    if (duplicateCard) {
+      return res.status(409).json({ 
+        status: 'fail', 
+        message: 'Company already exists' });
+    }
+  
+    const newCard = await Card.create({
+      company_name,
+      company_description,
+      company_address,
+      company_phone,
+      company_photo,
+      user_id
+    });
 
     res.status(200).json({
       status: 'Success',
@@ -123,7 +137,14 @@ router.put('/:id', verify_logged_in, async (req, res)=>{
     if (!id) {
       return res.status(400).json({ message: 'No id found.' });
     }
-    //this endpoint still finds success even with a fake id number. We need to do a check in db first and if no id is found we need to send an error
+    const { company_name, company_description, company_address, company_phone } = req.body
+   const duplicateCard = await Card.findOne({ company_name: company_name });
+    if (duplicateCard) {
+      return res.status(409).json({ 
+        status: 'fail', 
+        message: 'Company already exists' });
+    }
+
     const oneCard = await Card.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true 
@@ -153,7 +174,6 @@ router.delete('/:id', verify_logged_in, async (req, res)=>{
     if (!id) {
       return res.status(400).json({ message: 'No id found.' });
     }
-    //this endpoint still finds success even with a fake id number. We need to do a check in db first and if no id is found we need to send an error
     const deleted = await Card.findByIdAndDelete(id);
     if (!deleted) {
       return res.status(404).json({ status: 'Failed', message: 'No id found.' });

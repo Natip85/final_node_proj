@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.MY_PORT;
 app.use(express.json());
 const userRouter = require('./routes/userRoutes');
-const cardRouter = require('./routes/bCardRoutes');
+const cardRouter = require('./routes/businessCardRoutes');
 mongoose.set('strictQuery', true);
 
 mongoose.connect(process.env.MONGO_DB, {
