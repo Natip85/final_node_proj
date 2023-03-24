@@ -17,6 +17,7 @@ const cookieOptions = {
   httpOnly: true
 };
 
+
 /*
 * POST http://localhost:3009/api/users/register
 */
@@ -63,6 +64,7 @@ router.post('/login', async (req, res)=>{
       return res.status(400).json({ status: 'Email or password invalid.' });
     }
     const token = signToken(user._id, user.biz);
+    
     if (!token) {
       return res.status(401).json({ status: 'There was problem with your authentication, please sign in again.'});
     }
@@ -97,5 +99,75 @@ router.get('/myUser', verify_logged_in, async (req, res)=>{
   }
 });
 
+/*
+* PATCH http://localhost:3009/api/users/updateMyUser
+*/
+router.patch('/updateMyUser', verify_logged_in, async (req, res)=>{
+ try {
+    const { name, email, biz } = req.body;
+
+    const duplicateEmail = await User.findOne({ email: email });
+    if (duplicateEmail) {
+      return res.status(409).json({ status: 'fail', message: 'Email already exists.' });
+    }
+  
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { name:name, email:email, biz: biz }, 
+      { new: true, runValidators: true }
+      );
+
+    res.status(200).json({ status: 'Success', data: updatedUser });
+  } catch (err) {
+    res.status(400).json({
+      status: 'Fail',
+      message: err.message
+    });
+  }
+});
+
+/*
+* PATCH http://localhost:3009/api/users/resetPassword
+*/
+router.patch('/resetPassword', verify_logged_in, async (req, res)=>{
+ try {
+    let { password } = req.body;
+
+    let duplicatePass = await User.findOne({ password: password });
+    if (duplicatePass) {
+      return res.status(409).json({ status: 'fail', message: 'Cannot use the same password.' });
+    }
+
+    password = await bcrypt.hash(password, 12); 
+
+    let updatedPass = await User.findByIdAndUpdate(req.user.id,{ password: password });
+
+    res.status(200).json({ status: 'Success', data: updatedPass });
+  } catch (err) {
+    res.status(400).json({
+      status: 'Fail',
+      message: err.message
+    });
+  }
+});
+
+
+/*
+* GET http://localhost:3009/api/users/logout
+*/
+// router.get('/logout', verify_logged_in, async (req, res)=>{
+//    try {
+    
+//   } catch (err) {
+//     res.status(400).json({
+//       status: 'Fail',
+//       message: err.message
+//     });
+//   }
+// })
 
 module.exports = router;
+
+
+
+

@@ -11,9 +11,6 @@ router.get('/mycard', verify_logged_in, async (req, res)=>{
   try {
     const decoded = req.user; 
     const myCards = await Card.find({ user_id: decoded.id });
-    if (!myCards) {
-      return res.status(404).json({ status: 'Fail', message: 'No id found.' });
-    }
     
     res.status(200).json({
       status: 'Success',

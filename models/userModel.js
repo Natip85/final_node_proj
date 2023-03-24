@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Must submit a name.'],
     maxlength: [100, 'Max 100 characters allowed.'],
-    minlength: [1, 'Min 2 characters required.']
+    minlength: [2, 'Min 2 characters required.']
   },
   email: {
     type: String,
@@ -47,8 +47,7 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// ============================= uscerSchema methods ==========================
-
+// console.log('tet');
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next(); 
   this.password = await bcrypt.hash(this.password, 12); 
